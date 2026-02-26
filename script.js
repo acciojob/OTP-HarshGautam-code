@@ -1,37 +1,19 @@
 //your JS code here. If required.
+const codes = document.querySelectorAll('.code');
 
-const inputs = document.querySelectorAll(".code");
+// Set initial focus to the first box
+codes[0].focus();
 
-// focus first input
-inputs[0].focus();
-
-inputs.forEach((input, index) => {
-
-  input.addEventListener("keydown", (e) => {
-
-    // allow only digits + backspace + tab
-    if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab") {
-      e.preventDefault();
-      return;
-    }
-
-    // BACKSPACE behavior
-    if (e.key === "Backspace") {
-      if (input.value === "" && index > 0) {
-        inputs[index - 1].value = "";
-        inputs[index - 1].focus();
-        e.preventDefault();
-      }
-      return;
-    }
-
-    // typing forward
-    input.value = "";
-    setTimeout(() => {
-      if (index < inputs.length - 1) {
-        inputs[index + 1].focus();
-      }
-    }, 10);
-  });
-
+codes.forEach((code, idx) => {
+    code.addEventListener('keydown', (e) => {
+        if (e.key >= 0 && e.key <= 9) {
+            // Clear the current value to ensure only one digit is present
+            codes[idx].value = '';
+            // Move focus to next after a tiny delay to allow the value to be set
+            setTimeout(() => codes[idx + 1].focus(), 10);
+        } else if (e.key === 'Backspace') {
+            // Move focus to previous field on backspace
+            setTimeout(() => codes[idx - 1].focus(), 10);
+        }
+    });
 });
