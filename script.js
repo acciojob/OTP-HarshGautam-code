@@ -1,29 +1,37 @@
 //your JS code here. If required.
-const codes = document.querySelectorAll(".code");
 
-// focus first box on load
-codes[0].focus();
+const inputs = document.querySelectorAll(".code");
 
-codes.forEach((input, index) => {
+// focus first input
+inputs[0].focus();
 
-  // typing forward
-  input.addEventListener("input", () => {
-    input.value = input.value.replace(/[^0-9]/g, ""); // allow digits only
+inputs.forEach((input, index) => {
 
-    if (input.value && index < codes.length - 1) {
-      codes[index + 1].focus();
-    }
-  });
-
-  // backspace behavior
   input.addEventListener("keydown", (e) => {
+
+    // allow only digits + backspace + tab
+    if (!/^[0-9]$/.test(e.key) && e.key !== "Backspace" && e.key !== "Tab") {
+      e.preventDefault();
+      return;
+    }
+
+    // BACKSPACE behavior
     if (e.key === "Backspace") {
       if (input.value === "" && index > 0) {
-        codes[index - 1].focus();
-      } else {
-        input.value = "";
+        inputs[index - 1].value = "";
+        inputs[index - 1].focus();
+        e.preventDefault();
       }
+      return;
     }
+
+    // typing forward
+    input.value = "";
+    setTimeout(() => {
+      if (index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+    }, 10);
   });
 
 });
